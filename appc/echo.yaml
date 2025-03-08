@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-c
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: app-echo-c
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: app-echo-c
+    spec:
+      initContainers:
+        - name: init-sleep
+          image: busybox
+          command: ["sleep", "180"]
+          imagePullPolicy: Always
+      containers:
+        - image: jmalloc/echo-server
+          imagePullPolicy: Always
+          name: echo-c
+          ports:
+            - containerPort: 8080  
